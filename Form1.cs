@@ -1,19 +1,23 @@
-﻿using System;
-using System.Collections;
+﻿using Maverick_Utility;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Reflection.Emit;
+using System.Runtime.Remoting.Contexts;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using static Maverick_Utility.GlobalKeyboardHook;
 
 namespace MaverickLabs
 {
     public partial class Form1 : Form
     {
         private ContextMenuSaveLoad saveLoad = new ContextMenuSaveLoad();
+        private FastContextForm FastContext;
+        private GlobalKeyboardHook globalKeyboardHook;
         public Form1()
         {
             InitializeComponent();
+
+            
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -22,7 +26,7 @@ namespace MaverickLabs
             notifyIcon1.BalloonTipTitle = "Maverick Lab's";
             notifyIcon1.BalloonTipText = "Maverick Lab's in tray";
             notifyIcon1.Text = "Maverick Lab's";
-            LoadContext();
+            FastContext = new FastContextForm(contextMenu);
 
         }
 
@@ -68,44 +72,19 @@ namespace MaverickLabs
             {
                 if (inputForm.ShowDialog() == DialogResult.OK)
                 {
-                    namePathPairs = inputForm.namePathPairs;
 
-                    AddItemToContext(namePathPairs);
-                    saveLoad.SaveDictionary("dictionary.json", namePathPairs);
                 }
             }
         }
-
-        private void AddItemToContext(Dictionary<string, string> keyValues)
-        {
-            foreach (var kvp in keyValues)
-            {
-                ToolStripMenuItem menuItem = new ToolStripMenuItem(kvp.Key);
-                menuItem.Tag = kvp.Value;
-                menuItem.Click += MenuItem_Click;
-                contextMenu.Items.Add(menuItem);
-            }
-        }
-        private void MenuItem_Click(object sender, EventArgs e)
-        {
-            if (sender is ToolStripMenuItem menuItem)
-            {
-                string folderPath = menuItem.Tag as string;
-                if (!string.IsNullOrEmpty(folderPath))
-                {
-                    Process.Start("explorer.exe", folderPath);
-                }
-            }
-        }
-        private void LoadContext()
-        {
-            AddItemToContext(saveLoad.LoadDictionary("dictionary.json"));
-        }
-
         private void button2_Click(object sender, EventArgs e)
         {
             var cursorPos = Cursor.Position;
             contextMenu.Show(cursorPos);
+        }
+
+        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            button1_Click(sender,e);
         }
     }
 }
