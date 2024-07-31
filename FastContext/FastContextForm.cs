@@ -1,10 +1,9 @@
-﻿using Maverick_Utility;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
-using static Maverick_Utility.GlobalKeyboardHook;
+using static MaverickLabs.KeyboardHook;
 
 namespace MaverickLabs
 {
@@ -13,18 +12,27 @@ namespace MaverickLabs
         private ContextMenuStrip contextMenu;
         private Dictionary<string, string> namePathPairs = new Dictionary<string, string>();
         private ContextMenuSaveLoad saveLoad = new ContextMenuSaveLoad();
-        private GlobalKeyboardHook globalKeyboardHook;
+
+        private KeyboardHook keyboardHook;
+
         public FastContextForm(ContextMenuStrip menu)
         {
             InitializeComponent();
             contextMenu = menu;
             DisplayDictionaryInListBox();
+            
             LoadContext();
 
-            globalKeyboardHook = new GlobalKeyboardHook();
-            globalKeyboardHook.KeyboardPressed += OnKeyPressed;
+            keyboardHook = new KeyboardHook();
+            keyboardHook.KeyboardPressed += OnKeyPressed;
+
             contextTimer.Interval = 100;
             contextTimer.Tick += HideContextMenu;
+        }
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            e.Cancel = true;
+            this.Hide();
         }
 
         private void HideContextMenu(object sender, EventArgs e)
@@ -54,9 +62,9 @@ namespace MaverickLabs
                 {
 
                     string customEventName = inputForm.EnteredText;
-                    string folderPath = inputForm.Path;
-                    listBox1.Items.Add($"Name: {inputForm.EnteredText}  Path: {inputForm.Path}");
-                    namePathPairs.Add(inputForm.EnteredText, inputForm.Path);
+                    string folderPath = inputForm.PathFolder;
+                    listBox1.Items.Add($"Name: {inputForm.EnteredText}  Path: {inputForm.PathFolder}");
+                    namePathPairs.Add(inputForm.EnteredText, inputForm.PathFolder);
                     SaveContext();
                     DisplayDictionaryInListBox();
                     //MessageBox.Show($"Text {inputForm.EnteredText}  Path {inputForm.Path}");
@@ -75,9 +83,10 @@ namespace MaverickLabs
         }
         private void buttonConfirm_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.OK;
+            //this.DialogResult = DialogResult.OK;
             AddItemToContext(namePathPairs);
             SaveContext();
+            this.Hide();
         }
         private void LoadContext()
         {
@@ -96,7 +105,9 @@ namespace MaverickLabs
                 ToolStripMenuItem menuItem = new ToolStripMenuItem(kvp.Key);
                 menuItem.Tag = kvp.Value;
                 menuItem.Click += MenuItem_Click;
+                //menuItem.Image = SystemIcons.WinLogo.ToBitmap();
                 contextMenu.Items.Add(menuItem);
+                
             }
         }
         private void MenuItem_Click(object sender, EventArgs e)
@@ -109,6 +120,11 @@ namespace MaverickLabs
                     Process.Start("explorer.exe", folderPath);
                 }
             }
+        }
+        private void LaunchProgramItem_Click(object sender, EventArgs e)
+        {
+            string programPath = @"C:\Path\To\Your\Program.exe"; 
+            Process.Start(programPath);
         }
 
         private void buttonEdit_Click(object sender, EventArgs e)
@@ -124,9 +140,9 @@ namespace MaverickLabs
                 {
                     namePathPairs.Remove(key);
                     string customEventName = inputForm.EnteredText;
-                    string folderPath = inputForm.Path;
-                    listBox1.Items.Add($"Name: {inputForm.EnteredText}  Path: {inputForm.Path}");
-                    namePathPairs.Add(inputForm.EnteredText, inputForm.Path);
+                    string folderPath = inputForm.PathFolder;
+                    listBox1.Items.Add($"Name: {inputForm.EnteredText}  Path: {inputForm.PathFolder}");
+                    namePathPairs.Add(inputForm.EnteredText, inputForm.PathFolder);
 
                     SaveContext();
                     DisplayDictionaryInListBox();
@@ -146,8 +162,9 @@ namespace MaverickLabs
             }
         }
 
-        private void OnKeyPressed(object sender, GlobalKeyboardHookEventArgs e)
+        private void OnKeyPressed(object sender, KeyboardHookEventArgs e)
         {
+            if (Form1.FastContextActive == false) return;
             if (e.VirtualCode == (int)Keys.F && Control.ModifierKeys == Keys.Shift)
             {
                 var cursorPos = Cursor.Position;

@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.button1 = new System.Windows.Forms.Button();
             this.buttonConfirm = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.buttonDelete = new System.Windows.Forms.Button();
@@ -42,6 +43,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.button1);
             this.panel1.Controls.Add(this.buttonConfirm);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.buttonDelete);
@@ -52,6 +54,16 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(290, 337);
             this.panel1.TabIndex = 0;
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.button1.Location = new System.Drawing.Point(215, 199);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 39);
+            this.button1.TabIndex = 6;
+            this.button1.Text = "Key settings";
+            this.button1.UseVisualStyleBackColor = false;
             // 
             // buttonConfirm
             // 
@@ -125,7 +137,7 @@
             this.MinimumSize = new System.Drawing.Size(300, 400);
             this.Name = "FastContextForm";
             this.ShowInTaskbar = false;
-            this.Text = "FastContextForm | Maverick Lab\'s";
+            this.Text = "FastContext | Maverick Lab\'s";
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);
@@ -142,5 +154,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button buttonConfirm;
         private System.Windows.Forms.Timer contextTimer;
+        private System.Windows.Forms.Button button1;
     }
 }

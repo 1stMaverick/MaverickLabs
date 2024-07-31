@@ -52,11 +52,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ContextMenuSaveLoad.cs" />
-    <Compile Include="FastContextForm.cs">
+    <Compile Include="FastContext\ContextMenuSaveLoad.cs" />
+    <Compile Include="FastContext\FastContextForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FastContextForm.Designer.cs">
+    <Compile Include="FastContext\FastContextForm.Designer.cs">
       <DependentUpon>FastContextForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Form1.cs">
@@ -65,38 +65,62 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="GlobalKeyboardHook .cs" />
-    <Compile Include="InputContext.cs">
+    <Compile Include="FastContext\InputContext.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="InputContext.Designer.cs">
+    <Compile Include="FastContext\InputContext.Designer.cs">
       <DependentUpon>InputContext.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KeyboardHook.cs" />
+    <Compile Include="Other\WatermarkTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Setting\AppSettings.cs" />
+    <Compile Include="Setting\LabSetting.cs" />
+    <Compile Include="Timer\TimerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Timer\TimerForm.Designer.cs">
+      <DependentUpon>TimerForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="FastContextForm.resx">
+    <Compile Include="Setting\SettingLabsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Setting\SettingLabsForm.Designer.cs">
+      <DependentUpon>SettingLabsForm.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="FastContext\FastContextForm.resx">
       <DependentUpon>FastContextForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="InputContext.resx">
+    <EmbeddedResource Include="FastContext\InputContext.resx">
       <DependentUpon>InputContext.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Timer\TimerForm.resx">
+      <DependentUpon>TimerForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
+    <EmbeddedResource Include="Setting\SettingLabsForm.resx">
+      <DependentUpon>SettingLabsForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
@@ -106,5 +130,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon-close.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon-open.png" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace MaverickLabs
 {
-    public class GlobalKeyboardHook : IDisposable
+    public class KeyboardHook : IDisposable
     {
         private const int WH_KEYBOARD_LL = 13;
         private const int WM_KEYDOWN = 0x0100;
@@ -15,9 +15,9 @@ namespace MaverickLabs
         private IntPtr _hookID = IntPtr.Zero;
         private LowLevelKeyboardProc _proc;
 
-        public event EventHandler<GlobalKeyboardHookEventArgs> KeyboardPressed;
+        public event EventHandler<KeyboardHookEventArgs> KeyboardPressed;
 
-        public GlobalKeyboardHook()
+        public KeyboardHook()
         {
             _proc = HookCallback;
             _hookID = SetHook(_proc);
@@ -44,7 +44,7 @@ namespace MaverickLabs
             if (nCode >= 0 && (wParam == (IntPtr)WM_KEYDOWN || wParam == (IntPtr)WM_SYSKEYDOWN))
             {
                 int vkCode = Marshal.ReadInt32(lParam);
-                KeyboardPressed?.Invoke(this, new GlobalKeyboardHookEventArgs(vkCode));
+                KeyboardPressed?.Invoke(this, new KeyboardHookEventArgs(vkCode));
             }
             return CallNextHookEx(_hookID, nCode, wParam, lParam);
         }
@@ -62,11 +62,11 @@ namespace MaverickLabs
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern IntPtr GetModuleHandle(string lpModuleName);
 
-        public class GlobalKeyboardHookEventArgs : EventArgs
+        public class KeyboardHookEventArgs : EventArgs
         {
             public int VirtualCode { get; private set; }
 
-            public GlobalKeyboardHookEventArgs(int virtualCode)
+            public KeyboardHookEventArgs(int virtualCode)
             {
                 VirtualCode = virtualCode;
             }
